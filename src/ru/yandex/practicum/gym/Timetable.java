@@ -13,9 +13,9 @@ public class Timetable {
         ArrayList<TrainingSession> trainingSessionList;
         TreeMap<TimeOfDay,ArrayList<TrainingSession>> timeOfDayMap;
 
-        if(timetable.containsKey(dayOfWeek)) {
+        if (timetable.containsKey(dayOfWeek)) {
             timeOfDayMap = timetable.get(dayOfWeek);
-            if(timeOfDayMap.containsKey(timeOfDay)) {
+            if (timeOfDayMap.containsKey(timeOfDay)) {
                 trainingSessionList = timeOfDayMap.get(timeOfDay);
             } else {
                 trainingSessionList = new ArrayList<>();
@@ -48,11 +48,11 @@ public class Timetable {
         CounterOfTrainings counterOfTrainings = null;
         Coach coach = null;
 
-        for(TreeMap<TimeOfDay,ArrayList<TrainingSession>> treeMapCoach : timetable.values()) {
+        for (TreeMap<TimeOfDay,ArrayList<TrainingSession>> treeMapCoach : timetable.values()) {
             for (ArrayList<TrainingSession> trainingSessions : treeMapCoach.values()) {
                 for (int i = 0; i < trainingSessions.size(); i++) {
                     coach = trainingSessions.get(i).getCoach();
-                    if(traningsCountMap.containsKey(coach)) {
+                    if (traningsCountMap.containsKey(coach)) {
                         traningsCountMap.put(coach,traningsCountMap.get(coach) + 1);
                     } else {
                         traningsCountMap.put(coach,1);

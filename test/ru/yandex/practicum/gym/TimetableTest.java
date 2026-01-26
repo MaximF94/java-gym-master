@@ -109,7 +109,7 @@ public class TimetableTest {
                 day, trainingTime);
 
         timetable.addNewTrainingSession(singleTrainingSession);
-        
+
         TreeMap<TimeOfDay, ArrayList<TrainingSession>> sessions = timetable.getTrainingSessionsForDay(day);
 
         //Проверяем, что занятие добавлено
