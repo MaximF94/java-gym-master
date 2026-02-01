@@ -21,7 +21,7 @@ public class TimetableTest {
         //Проверить, что за понедельник вернулось одно занятие
         Assertions.assertEquals(1,timetable.getTrainingSessionsForDay(DayOfWeek.MONDAY).size());
         //Проверить, что за вторник не вернулось занятий
-        Assertions.assertNull(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY));
+        Assertions.assertEquals(0,timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY).size());
     }
 
     @Test
@@ -29,6 +29,7 @@ public class TimetableTest {
         Timetable timetable = new Timetable();
 
         Coach coach = new Coach("Васильев", "Николай", "Сергеевич");
+        Coach coach2 = new Coach("Николаев", "Игорь", "Александрович");
 
         Group groupAdult = new Group("Акробатика для взрослых", Age.ADULT, 90);
         TrainingSession thursdayAdultTrainingSession = new TrainingSession(groupAdult, coach,
@@ -44,22 +45,31 @@ public class TimetableTest {
         TrainingSession saturdayChildTrainingSession = new TrainingSession(groupChild, coach,
                 DayOfWeek.SATURDAY, new TimeOfDay(10, 0));
 
+        TrainingSession saturdayAdultTrainingSession = new TrainingSession(groupAdult, coach2,
+                DayOfWeek.SATURDAY, new TimeOfDay(10, 0));
+
         timetable.addNewTrainingSession(mondayChildTrainingSession);
         timetable.addNewTrainingSession(thursdayChildTrainingSession);
         timetable.addNewTrainingSession(saturdayChildTrainingSession);
+        timetable.addNewTrainingSession(saturdayAdultTrainingSession);
 
         TimeOfDay firstTrainingTime = new TimeOfDay(13, 0);
         TimeOfDay secondTrainingTime = new TimeOfDay(20, 0);
+
+        TimeOfDay trainingTimeSaturday = new TimeOfDay(10, 0);
 
         // Проверить, что за понедельник вернулось одно занятие
         Assertions.assertEquals(1,timetable.getTrainingSessionsForDay(DayOfWeek.MONDAY).size());
 
         // Проверить, что за четверг вернулось два занятия в правильном порядке: сначала в 13:00, потом в 20:00
         Assertions.assertTrue(
-                timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).firstKey().equals(firstTrainingTime) &&
-                        timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).lastKey().equals(secondTrainingTime));
+                timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).getFirst().getTimeOfDay().equals(firstTrainingTime) &&
+                        timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).getLast().getTimeOfDay().equals(secondTrainingTime));
         // Проверить, что за вторник не вернулось занятий
-        Assertions.assertNull(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY));
+        Assertions.assertEquals(0,timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY).size());
+
+        // Проверить, что за субботу в 10:00 вернулось 2 занятия
+        Assertions.assertEquals(2,timetable.getTrainingSessionsForDayAndTime(DayOfWeek.SATURDAY,trainingTimeSaturday).size());
     }
 
     @Test
@@ -89,7 +99,7 @@ public class TimetableTest {
         //Проверить, что за понедельник в 13:00 вернулось одно занятие
         Assertions.assertEquals(1,timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY,trainingTimeFirst).size());
         //Проверить, что за понедельник в 14:00 не вернулось занятий
-        Assertions.assertNull(timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY,trainingTimeSecond));
+        Assertions.assertEquals(0,timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY,trainingTimeSecond).size());
 
         //Проверить, что за вторник в 13:00 вернулись два занятия
         Assertions.assertEquals(2,timetable.getTrainingSessionsForDayAndTime(DayOfWeek.TUESDAY,trainingTimeFirst).size());
@@ -110,10 +120,10 @@ public class TimetableTest {
 
         timetable.addNewTrainingSession(singleTrainingSession);
 
-        TreeMap<TimeOfDay, ArrayList<TrainingSession>> sessions = timetable.getTrainingSessionsForDay(day);
+        ArrayList<TrainingSession> sessions = timetable.getTrainingSessionsForDay(day);
 
         //Проверяем, что занятие добавлено
-        Assertions.assertNotNull(sessions.get(trainingTime));
+        Assertions.assertNotNull(sessions);
     }
 
 
