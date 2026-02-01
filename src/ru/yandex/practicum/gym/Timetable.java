@@ -28,6 +28,7 @@ public class Timetable {
         });
 
     }
+    
     public ArrayList<TrainingSession> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
         //как реализовать, тоже непонятно, но сложность должна быть О(1)
         ArrayList<TrainingSession> trainingSessions = new ArrayList<>();
