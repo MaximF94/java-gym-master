@@ -18,6 +18,16 @@ public class TrainingSession {
         this.timeOfDay = timeOfDay;
     }
 
+    @Override
+    public String toString() {
+        return "TrainingSession{" +
+                "group=" + group +
+                ", coach=" + coach +
+                ", dayOfWeek=" + dayOfWeek +
+                ", timeOfDay=" + timeOfDay +
+                '}';
+    }
+
     public Group getGroup() {
         return group;
     }
